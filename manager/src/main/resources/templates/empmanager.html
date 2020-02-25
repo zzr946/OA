@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>员工管理</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link type="text/css" rel="stylesheet" href="css/css.css"/>
+    <link rel="stylesheet" href="css/empmanager.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/empmanager.js"></script>
+
+</head>
+<body>
+<!--顶部导航栏-->
+<div th:replace="publicFragment::top_nav"></div>
+<!--顶部导航栏的点击事件-->
+<script>
+    function sty() {
+        $("#sy").removeClass("seleli");
+        $("#grzx").removeClass("seleli");
+        $("#jcjl").removeClass("seleli");
+        $("#kqtj").removeClass("seleli");
+        $("#xcfl").removeClass("seleli");
+    }
+
+    $(function () {
+        $("#yggl").addClass("seleli");//页面加载时显示已经选中的菜单项
+        $("#sy").click(function () {
+            //alert("首页");
+            sty();
+            $("#sy").addClass("seleli");
+            location.href = "/main";
+        });
+
+        $("#grzx").click(function () {
+            //alert("个人中心");
+            sty();
+            $("#grzx").addClass("seleli");
+            location.href = "/info";
+        });
+
+        $("#yggl").click(function () {
+            //alert("员工管理");
+            sty();
+            $("#yggl").addClass("seleli");
+            location.href = "/empmanager";
+        });
+
+        $("#bmgl").click(function () {
+            //alert("部门管理");
+            sty();
+            $("#bmgl").addClass("seleli");
+            location.href = "/depmanager";
+        });
+
+        $("#gzgl").click(function () {
+            //alert("工资管理");
+            sty();
+            $("#gzgl").addClass("seleli");
+            location.href = "/salarymanager";
+        });
+    })
+</script>
+
+<!--导航栏下面的部分-->
+<div class="container" style="height: 300px">
+    <!--左边栏   日历  日期-->
+    <!--<div th:replace="publicFragment::left_bar"></div>-->
+
+    <!--显示的主体部分-->
+    <div class="mainbody" style="margin: 20px 0">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 salary_main">
+            <button onclick="add_employee()" class="btn btn-primary" style="margin-bottom: 10px;">添加新员工</button>
+            <!--显示奖惩记录的表格-->
+            <table class="table table-condensed salary_table">
+                <tr>
+                    <th style="width: 12.5%">员工编号</th>
+                    <th style="width: 12.5%">姓名</th>
+                    <th style="width: 12.5%">部门</th>
+                    <th style="width: 12.5%">职位状态</th>
+                    <th style="width: 12.5%">详情</th>
+                </tr>
+                <tr th:each="emp:${session.employees}">
+                    <td th:text="${emp.jobnumber}">员工编号</td>
+                    <td th:text="${emp.name}">姓名</td>
+                    <td th:text="${emp.department}">部门</td>
+                    <td th:text="${emp.state}">职位状态</td>
+                    <td>
+                        <!-- 隐藏域 记录员工id-->
+                        <input type="hidden" th:value="${emp.id}">
+                        <a class="" href="javascript:void(0)" onclick="employee_info(this)">查看详情</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+
+
+
+    </div>
+</div>
+
+</body>
+</html>

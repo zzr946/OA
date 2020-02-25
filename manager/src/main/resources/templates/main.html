@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>人力资源管理平台</title>
+    <link type="text/css" rel="stylesheet" href="css/css.css"/>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/main.js"></script>
+
+</head>
+<body style="height: 300px">
+
+<!--顶部导航栏-->
+<div th:replace="publicFragment::top_nav"></div>
+<!--顶部导航栏的点击事件-->
+<script>
+    function sty() {
+        $("#sy").removeClass("seleli");
+        $("#grzx").removeClass("seleli");
+        $("#jcjl").removeClass("seleli");
+        $("#kqtj").removeClass("seleli");
+        $("#xcfl").removeClass("seleli");
+    }
+
+    $(function () {
+        $("#sy").addClass("seleli");//页面加载时显示已经选中的菜单项
+        $("#sy").click(function () {
+            //alert("首页");
+            sty();
+            $("#sy").addClass("seleli");
+            location.href = "/main";
+        });
+
+        $("#grzx").click(function () {
+            //alert("个人中心");
+            sty();
+            $("#grzx").addClass("seleli");
+            location.href = "/info";
+        });
+
+        $("#jcjl").click(function () {
+            //alert("奖惩记录");
+            sty();
+            $("#jcjl").addClass("seleli");
+            location.href = "/rewards";
+        });
+
+        $("#kqtj").click(function () {
+            //alert("考勤统计");
+            sty();
+            $("#kqtj").addClass("seleli");
+            location.href = "/kaoqin";
+        });
+
+        $("#xcfl").click(function () {
+            //alert("薪酬福利");
+            sty();
+            $("#xcfl").addClass("seleli");
+            location.href = "/salary";
+        });
+
+        $("#yggl").click(function () {
+            //alert("员工管理");
+            sty();
+            $("#yggl").addClass("seleli");
+            location.href = "/empmanager";
+        });
+
+        $("#bmgl").click(function () {
+            //alert("部门管理");
+            sty();
+            $("#bmgl").addClass("seleli");
+            location.href = "/depmanager";
+        });
+
+        $("#gzgl").click(function () {
+            //alert("工资管理");
+            sty();
+            $("#gzgl").addClass("seleli");
+            location.href = "/salarymanager";
+        });
+    })
+</script>
+
+<!--顶部下面的部分-->
+<div class="container" style="height: 300px">
+    <!--左边栏   日历  日期-->
+    <div th:replace="publicFragment::left_bar"></div>
+
+    <!--显示的主体部分-->
+    <div class="mainbody">
+        <div class="adtip">
+            <div class="tip">
+                <p class="goom">欢迎您，[[${session.user.name}]]！</p>
+                <p>您目前<span>没有需要处理的事件！</span> <span> </span> <span> </span></p>
+            </div>
+            <div class="adv">
+                <p>公司统一公告在这边展示</p>
+                <span onclick="del()"> x </span></div>
+        </div>
+        <!--通知上面的4个图标   没有实际意义-->
+        <div class="rig_link">
+            <ul>
+                <li><a href="#"><img src="images/img_01.jpg" alt="" title=""></a></li>
+                <li><a href="#"><img src="images/img_02.jpg" alt="" title=""></a></li>
+                <li><a href="#"><img src="images/img_03.jpg" alt="" title=""></a></li>
+                <li><a href="#"><img src="images/img_04.jpg" alt="" title=""></a></li>
+            </ul>
+        </div>
+        <!--通知-->
+        <div class="rig_lm01">
+            <div class="title"><img src="images/listicon.jpg" class="icon" style="padding-top:13px;">
+                <h2>通知</h2>
+                <span class="red_numb"></span></div>
+            <div class="detail">
+
+                <div class="dat02"> <span class="datti"><span>  </span> <br/>
+          <span class="jan">   </span></span> <span class="sqdeta"><img src="images/bs_04.jpg"> 目前没有待处理的消息！</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

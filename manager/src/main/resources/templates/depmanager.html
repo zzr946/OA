@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>部门管理</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link type="text/css" rel="stylesheet" href="css/css.css"/>
+    <link rel="stylesheet" href="css/empmanager.css">
+    <style>
+        .hidden{
+            display:none;
+        }
+    </style>
+
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/depmanager.js"></script>
+
+</head>
+<body>
+<!--顶部导航栏-->
+<div th:replace="publicFragment::top_nav"></div>
+<!--顶部导航栏的点击事件-->
+<script>
+    function sty() {
+        $("#sy").removeClass("seleli");
+        $("#grzx").removeClass("seleli");
+        $("#jcjl").removeClass("seleli");
+        $("#kqtj").removeClass("seleli");
+        $("#xcfl").removeClass("seleli");
+    }
+
+    $(function () {
+        $("#bmgl").addClass("seleli");//页面加载时显示已经选中的菜单项
+        $("#sy").click(function () {
+            //alert("首页");
+            sty();
+            $("#sy").addClass("seleli");
+            location.href = "/main";
+        });
+
+        $("#grzx").click(function () {
+            //alert("个人中心");
+            sty();
+            $("#grzx").addClass("seleli");
+            location.href = "/info";
+        });
+
+        $("#yggl").click(function () {
+            //alert("员工管理");
+            sty();
+            $("#yggl").addClass("seleli");
+            location.href = "/empmanager";
+        });
+
+        $("#bmgl").click(function () {
+            //alert("部门管理");
+            sty();
+            $("#bmgl").addClass("seleli");
+            location.href = "/depmanager";
+        });
+
+        $("#gzgl").click(function () {
+            //alert("工资管理");
+            sty();
+            $("#gzgl").addClass("seleli");
+            location.href = "/salarymanager";
+        });
+    })
+</script>
+
+<!--导航栏下面的部分-->
+<div class="container" style="height: 300px">
+    <!--左边栏   日历  日期-->
+    <!--<div th:replace="publicFragment::left_bar"></div>-->
+
+    <!--显示的主体部分-->
+    <div class="mainbody" style="margin: 20px 0">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 salary_main">
+            <button onclick="add_dep()" class="btn btn-primary" style="margin-bottom: 10px;">新增部门</button>
+            <!--点击新增部门，显示-->
+            <table id="add_tab" class="table table-condensed salary_table hidden" style="border: 10px solid #eee;">
+                <tr>
+                    <th style="width: 12.5%">部门名称</th>
+                    <th style="width: 12.5%">部门总人数</th>
+                    <th style="width: 12.5%">操作</th>
+                </tr>
+                <tr>
+                    <td><input id="add_empname" type="text"></td><!--部门名称-->
+                    <td>0</td>
+                    <td>
+                        <!-- 隐藏域 记录部门id-->
+                        <input type="hidden">
+                        <a style="margin-right: 5px;" href="javascript:void(0)" onclick="save_addDep()">保存</a>
+                        <a style="margin-left: 5px;" href="javascript:void(0)" onclick="quxiao_addDep()">取消</a>
+                    </td>
+                </tr>
+            </table>
+
+            <!--点击查看详情，显示-->
+            <div id="dep_item" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden" style="border: 10px solid #eee;padding: 10px">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 input-group" style="margin: 5px 0px;">
+                    <span class="input-group-addon">部门名称</span>
+                    <input id="depname_item" type="text" class="form-control" aria-describedby="basic-addon1" >
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 input-group" style=" margin: 5px 0px;">
+                    <span class="input-group-addon">部门总人数</span>
+                    <input id="count_item" type="text" class="form-control" aria-describedby="basic-addon1" disabled>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <!--隐藏域记录当亲登录人的id-->
+                    <button onclick="fanhui()" type="button" class="btn btn-primary">取消</button>
+                    <input id="id_item" type="hidden" value="">
+                    <button onclick="edit_savedep(this)" type="button" class="btn btn-success btn_save" style="float: right;">保存</button>
+                </div>
+            </div>
+
+
+
+            <!--显示部门信息的表格-->
+            <table class="table table-condensed salary_table">
+                <tr>
+                    <th style="width: 12.5%">部门名称</th>
+                    <th style="width: 12.5%">部门总人数</th>
+                    <th style="width: 12.5%">详情</th>
+                </tr>
+                <tr th:each="dep:${session.department}">
+                    <td th:text="${dep.depname}">部门名称</td>
+                    <td th:text="${dep.count}">部门总人数</td>
+                    <td>
+                        <!-- 隐藏域 记录部门id-->
+                        <input type="hidden" th:value="${dep.id}">
+                        <a class="" href="javascript:void(0)" onclick="dep_info(this)">查看详情</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

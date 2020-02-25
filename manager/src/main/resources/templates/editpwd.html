@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>修改密码</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link type="text/css" rel="stylesheet" href="css/css.css"/>
+    <link rel="stylesheet" href="css/employee.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/editpwd.js"></script>
+</head>
+<body>
+
+<!--导航栏下面的部分-->
+<div class="container" style="height: 300px">
+    <!--左边栏   日历  日期-->
+    <!--<div th:replace="publicFragment::left_bar"></div>-->
+
+    <!--显示的主体部分-->
+    <div class="mainbody" style="margin: 0px">
+        <!--个人信息-->
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 info_main">
+            <span style="font-size: 20px;margin-top: 15px">修改密码</span>
+            <hr class="line">
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <!--个人信息 展示部分-->
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 own_info">
+                    <div class="input-group">
+                        <span class="input-group-addon">工号</span>
+                        <input type="text" class="form-control jobnumber" th:value="${session.user.jobnumber}"
+                               aria-describedby="basic-addon1" disabled>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">姓名</span>
+                        <input type="text" class="form-control name" th:value="${session.user.name}"
+                               aria-describedby="basic-addon1" disabled>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">原密码</span>
+                        <input type="password" class="form-control oldpwd" aria-describedby="basic-addon1" >
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">新密码</span>
+                        <input type="password" class="form-control newpwd" aria-describedby="basic-addon1" >
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">确认密码</span>
+                        <input type="password" class="form-control repwd" aria-describedby="basic-addon1">
+                    </div>
+                    <!--<hr class="line">-->
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <button onclick="editpwd_fanhui()" type="button" class="btn btn-primary">返回</button>
+                        <input type="hidden" th:value="${session.user.id}">
+                        <button onclick="editpwd_save(this)" type="button" class="btn btn-success btn_save">修改</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

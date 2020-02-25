@@ -1,0 +1,11 @@
+.rewards_main{
+    border: 20px solid #EEE;
+    padding: 20px;
+}
+.rewards_table{
+    border: 1px solid #eee;
+}
+
+.rewards_table th{
+    text-align:center;
+}

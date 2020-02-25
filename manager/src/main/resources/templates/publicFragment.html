@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>publicFragment</title>
+
+</head>
+<body>
+
+<!--顶部导航栏-->
+<div class="header" th:fragment="top_nav">
+    <div class="top">
+        <img class="logo" src="images/main_logo.jpg"/>
+        <ul class="nav">
+            <!--class="seleli"-->
+            <li id="sy" ><a href="javascript:void(0)">首页</a></li>
+            <li id="grzx" ><a href="javascript:void(0)">个人中心</a></li>
+
+            <!--普通员工显示的内容-->
+            <li id="jcjl" th:if="${session.user.jurisdiction eq '0'}"><a href="javascript:void(0)">奖惩记录</a></li>
+            <li id="kqtj" th:if="${session.user.jurisdiction eq '0'}"><a href="javascript:void(0)">考勤统计</a></li>
+            <li id="xcfl" th:if="${session.user.jurisdiction eq '0'}"><a href="javascript:void(0)">薪酬福利</a></li>
+
+            <!--管理员登录后显示的内容-->
+            <li id="yggl" th:if="${session.user.jurisdiction eq '1'}"><a href="javascript:void(0)">员工管理</a></li>
+            <li id="bmgl" th:if="${session.user.jurisdiction eq '1'}"><a href="javascript:void(0)">部门管理</a></li>
+            <!--<li id="gzgl" th:if="${session.user.jurisdiction eq '1'}"><a href="javascript:void(0)">工资管理</a></li>-->
+
+        </ul>
+    </div>
+</div>
+
+
+<!--左边栏    日期时间-->
+<div class="leftbar" th:fragment="left_bar">
+    <div class="lm01"><img class="peptx" src="images/tximg.jpg"/>
+        <div class="pepdet">
+            <p class="pepname" th:text="${session.user.name}">姓名</p>
+            <p th:text="${session.user.name}">姓名</p>
+            <p th:text="${session.user.department}">部门</p>
+            <a href="javascript:void(0)" onclick="loguot()">退出登录</a>
+            <input type="hidden" th:value="${session.user.id}"><!--用户id-->
+            <a href="javascript:void(0)" onclick="editpwd()">修改密码</a>
+        </div>
+
+        <script>
+            //退出登录
+            function loguot() {
+                //alert("点击了退出登录！");
+                var boolean = confirm("确定要退出登录？");
+                if (boolean) {
+                    //如果点击了确定按钮，则执行退出操作
+                    location.href="/logout";
+                } else {
+                    //点击取消则直接返回
+                    return false;
+                }
+
+            }
+                //修改密码
+            function editpwd() {
+                location.href="/editpwd";
+            }
+            
+        </script>
+        
+
+        <div class="clear"></div>
+    </div>
+    <div class="lm02">
+        <div class="title"><img class="icon" src="images/dataicon.jpg"/>
+            <h2>日历</h2>
+        </div>
+        <div class="detail"><img class="" src="images/kj_01.jpg"/></div>
+    </div>
+
+</div>
+
+</body>
+</html>

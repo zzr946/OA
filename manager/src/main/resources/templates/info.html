@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>个人中心</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link type="text/css" rel="stylesheet" href="css/css.css"/>
+    <link rel="stylesheet" href="css/info.css">
+    <script src="js/jquery.min.js"></script>
+</head>
+<body>
+
+<!--顶部导航栏-->
+<div th:replace="publicFragment::top_nav"></div>
+<!--顶部导航栏的点击事件-->
+<script>
+    function sty() {
+        $("#sy").removeClass("seleli");
+        $("#grzx").removeClass("seleli");
+        $("#jcjl").removeClass("seleli");
+        $("#kqtj").removeClass("seleli");
+        $("#xcfl").removeClass("seleli");
+    }
+
+    $(function () {
+        $("#grzx").addClass("seleli");//页面加载时显示已经选中的菜单项
+        $("#sy").click(function () {
+            //alert("首页");
+            sty();
+            $("#sy").addClass("seleli");
+            location.href = "/main";
+        });
+
+        $("#grzx").click(function () {
+            //alert("个人中心");
+            sty();
+            $("#grzx").addClass("seleli");
+            location.href = "/info";
+        });
+
+        $("#jcjl").click(function () {
+            //alert("奖惩记录");
+            sty();
+            $("#jcjl").addClass("seleli");
+            location.href = "/rewards";
+        });
+
+        $("#kqtj").click(function () {
+            //alert("考勤统计");
+            sty();
+            $("#kqtj").addClass("seleli");
+            location.href = "/kaoqin";
+        });
+
+        $("#xcfl").click(function () {
+            //alert("薪酬福利");
+            sty();
+            $("#xcfl").addClass("seleli");
+            location.href = "/salary";
+        });
+
+        $("#yggl").click(function () {
+            //alert("员工管理");
+            sty();
+            $("#yggl").addClass("seleli");
+            location.href = "/empmanager";
+        });
+
+        $("#bmgl").click(function () {
+            //alert("部门管理");
+            sty();
+            $("#bmgl").addClass("seleli");
+            location.href = "/depmanager";
+        });
+
+        $("#gzgl").click(function () {
+            //alert("工资管理");
+            sty();
+            $("#gzgl").addClass("seleli");
+            location.href = "/salarymanager";
+        });
+
+    })
+</script>
+
+<!--导航栏下面的部分-->
+<div class="container" style="height: 300px">
+    <!--左边栏   日历  日期-->
+    <!--<div th:replace="publicFragment::left_bar"></div>-->
+
+    <!--显示的主体部分-->
+    <div class="mainbody" style="margin: 0px">
+        <!--个人信息-->
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 info_main">
+            <span style="font-size: 20px;margin-top: 15px">个人信息</span>
+            <hr class="line">
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <!--个人信息 展示部分-->
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 own_info">
+                    <div class="input-group">
+                        <span class="input-group-addon">工号</span>
+                        <input type="text" class="form-control jobnumber" th:value="${session.user.jobnumber}"
+                               aria-describedby="basic-addon1" disabled>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">姓名</span>
+                        <input type="text" class="form-control name" th:value="${session.user.name}"
+                               aria-describedby="basic-addon1" disabled>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">部门</span>
+                        <input type="text" class="form-control department" th:value="${session.user.department}"
+                               aria-describedby="basic-addon1" disabled>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">性别</span>
+                        <input type="text" class="form-control sex" th:value="${session.user.sex}"
+                               aria-describedby="basic-addon1" disabled>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">年龄</span>
+                        <input type="text" class="form-control age" th:value="${session.user.age}"
+                               aria-describedby="basic-addon1" disabled>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">电话</span>
+                        <input type="text" class="form-control phone" name="phone" th:value="${session.user.phone}"
+                               aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">职位状态</span>
+                        <input type="text" class="form-control state" th:value="${session.user.state}"
+                               aria-describedby="basic-addon1" disabled>
+                    </div>
+                    <!--<hr class="line">-->
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <!--隐藏域记录当亲登录人的id-->
+                        <input type="hidden" id="user_id" name="id" th:value="${session.user.id}">
+                        <button id="save_own" type="button" class="btn btn-success btn_save">保存</button>
+                    </div>
+                    <!--点击个人信息的保存按钮后触发的事件-->
+                    <script>
+                        $(function () {
+                            $("#save_own").click(function () {
+                                //alert("点击了保存按钮");
+                                //获取修改以后的电话号码
+                                var phone = $(".phone").val();
+                                //获取当前登录人的id
+                                var id = $("#user_id").val();
+                                //console.info("用户id："+id+"用户手机号："+phone);
+                                if (!(/^1[3456789]\d{9}$/.test(phone))) {
+                                    alert("手机号码有误，请重填");
+                                    return false;
+                                }
+                                $.ajax({
+                                    type: "post",
+                                    url: "/owninfo/" + id + "/" + phone,
+                                    //data: {"id": id,"phone": phone},
+                                    success: function (result) {
+                                        //成功的回调函数
+                                        //成功则将修改后的电话号码显示在页面上
+                                        if (result.code == 0) {
+                                            $(".phone").val(result.data.phone);
+                                            alert(result.msg);
+                                        } else {
+                                            alert("系统异常！")
+                                        }
+                                    }
+                                    //dataType: "json"
+                                });
+
+                            });
+                        })
+                    </script>
+                </div>
+            </div>
+        </div>
+
+        <!--家庭成员信息-->
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 info_main">
+            <span style="font-size: 20px;margin-top: 15px">家庭成员信息</span>
+            <hr class="line">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 show_main">
+                <!--家庭成员信息 展示部分   遍历展示-->
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" th:each="family:${session.familys}">
+                    <!--<span style="font-size: 16px;margin-bottom: 10px">成员1:</span>-->
+                    <div class="input-group">
+                        <span class="input-group-addon">姓名</span>
+                        <input type="text" class="form-control" th:value="${family.folkname}"
+                               aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">性别</span>
+                        <input type="text" class="form-control" th:value="${family.folksex}"
+                               aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">年龄</span>
+                        <input type="text" class="form-control" th:value="${family.folkage}"
+                               aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">关系</span>
+                        <input type="text" class="form-control" th:value="${family.folkrelation}"
+                               aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">联系方式</span>
+                        <input type="text" class="form-control" th:value="${family.spare1}"
+                               aria-describedby="basic-addon1">
+                    </div>
+                    <!--<hr style="height:5px">-->
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <button onclick="del(this)" type="button" class="btn btn-danger ">删除</button>
+                        <!--隐藏域记录当前登录人的家属的id-->
+                        <input type="hidden" th:value="${family.id}">
+                        <button onclick="save(this)" type="button" class="btn btn-success btn_save save_family">保存
+                        </button>
+                    </div>
+                </div>
+                <!--隐藏域 保存当前登录人的id-->
+                <input type="hidden" th:value="${session.user.id}">
+                <button onclick="add(this)" type="button" class="btn btn-info add_family">添加家庭成员</button>
+                <!--删除家庭成员/修改家庭成员的按钮点击事件-->
+                <script>
+                    /*点击删除家属的按钮*/
+                    function del(t) {
+                        // alert("点击了删除按钮");
+                        var boolean = confirm("确定要删除？");
+                        if (boolean) {
+                            //如果点击了确定按钮，则执行删除操作
+                            //获取需要删除的家属id
+                            var id = $(t).next().val();
+                            $.ajax({
+                                type: "post",
+                                url: "/delfamily/" + id,
+                                success: function (result) {
+                                    //成功的回调函数
+                                    if (result.code == 0) {
+                                        //将删除的节点删除
+                                        $(t).parent().parent().remove();
+                                        alert(result.msg);
+                                    } else {
+                                        alert("系统异常！")
+                                    }
+                                }
+                            });
+                        } else {
+                            //点击取消则直接返回
+                            return false;
+                        }
+                    }
+
+                    /*点击保存按钮   修改家属信息*/
+                    function save(t) {
+                        //获取需要修改的家属id
+                        var id = $(t).prev().val();
+                        //获取家属姓名
+                        var folkname = $(t).parent().prev().prev().prev().prev().prev().children("input").val();
+                        //获取家属性别
+                        var folksex = $(t).parent().prev().prev().prev().prev().children("input").val();
+                        //获取家属年龄
+                        var folkage = $(t).parent().prev().prev().prev().children("input").val();
+                        //获取家属关系
+                        var folkrelation = $(t).parent().prev().prev().children("input").val();
+                        //获取家属联系方式
+                        var spare1 = $(t).parent().prev().children("input").val();
+                        //console.info("家属id："+id+",  家属姓名:"+folkname+",  家属性别："+folksex+",  家属年龄："+folkage+",  关系："+folkrelation+",  家属联系方式："+spare1);
+                        //数据校验
+                        if (folkname == "" || folkname == null || folksex == "" || folksex == null || folkage == "" ||
+                            folkage == null || folkrelation == "" || folkrelation == null || spare1 == "" || spare1 == null) {
+                            alert("请将信息补充完整！");
+                            return false;
+                        }
+                        if (!(/^1[3456789]\d{9}$/.test(spare1))) {
+                            alert("手机号码有误，请重填");
+                            return false;
+                        }
+                        $.ajax({
+                            type: "post",
+                            url: "/editFamily/" + id + "/" + folkname + "/" + folksex + "/" + folkage + "/" + folkrelation + "/" + spare1,
+                            success: function (result) {
+                                //成功的回调函数
+                                if (result.code == 0) {
+                                    //成功
+                                    alert(result.msg);
+                                } else {
+                                    alert(result.msg);
+                                }
+                            }
+                        });
+                    }
+
+                    /*添加家庭成员*/
+                    function add(t) {
+                        //获取当前登录人的id
+                        var userid = $(t).prev().val();
+                        //console.info(userid);
+                        //添加子节点
+                        var addElement = "<div class=\"col-lg-6 col-md-6 col-sm-6 col-xs-6\" style=\"border: #eee solid 1px;padding: 20px;margin:10px 0;\">\n" +
+                            "                    <div class=\"input-group\">\n" +
+                            "                        <span class=\"input-group-addon\">姓名</span>\n" +
+                            "                        <input type=\"text\" class=\"form-control\"  aria-describedby=\"basic-addon1\">\n" +
+                            "                    </div>\n" +
+                            "                    <div class=\"input-group\">\n" +
+                            "                        <span class=\"input-group-addon\">性别</span>\n" +
+                            "                        <input type=\"text\" class=\"form-control\" aria-describedby=\"basic-addon1\">\n" +
+                            "                    </div>\n" +
+                            "                    <div class=\"input-group\">\n" +
+                            "                        <span class=\"input-group-addon\">年龄</span>\n" +
+                            "                        <input type=\"text\" class=\"form-control\" aria-describedby=\"basic-addon1\">\n" +
+                            "                    </div>\n" +
+                            "                    <div class=\"input-group\">\n" +
+                            "                        <span class=\"input-group-addon\">关系</span>\n" +
+                            "                        <input type=\"text\" class=\"form-control\" aria-describedby=\"basic-addon1\">\n" +
+                            "                    </div>\n" +
+                            "                    <div class=\"input-group\">\n" +
+                            "                        <span class=\"input-group-addon\">联系方式</span>\n" +
+                            "                        <input type=\"text\" class=\"form-control\" aria-describedby=\"basic-addon1\">\n" +
+                            "                    </div>\n" +
+                            "                    <!--<hr style=\"height:5px\">-->\n" +
+                            "                    <div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12\">\n" +
+                            "                        <button onclick=\"cancel(this)\" type=\"button\" class=\"btn btn-danger \">取消</button>\n" +
+                            "                        <button onclick=\"sub(this)\" type=\"button\" class=\"btn btn-success btn_save save_family\">保存</button>\n" +
+                            "                    </div>\n" +
+                            "                </div>";
+                        $(".show_main").append(addElement);
+
+                    }
+                    /*添加家属信息输入框中  点击取消按钮触发事件*/
+                    function cancel(t) {
+                        $(t).parent().parent().css("display", "none");
+                    }
+                    /*添加家属信息输入框中  点击保存按钮触发事件  添加家属*/
+                    function sub(t) {
+                        //获取家属姓名
+                        var folkname = $(t).parent().prev().prev().prev().prev().prev().children("input").val();
+                        //获取家属性别
+                        var folksex = $(t).parent().prev().prev().prev().prev().children("input").val();
+                        //获取家属年龄
+                        var folkage = $(t).parent().prev().prev().prev().children("input").val();
+                        //获取家属关系
+                        var folkrelation = $(t).parent().prev().prev().children("input").val();
+                        //获取家属联系方式
+                        var spare1 = $(t).parent().prev().children("input").val();
+                        console.info("家属姓名:" + folkname + ",  家属性别：" + folksex + ",  家属年龄：" + folkage + ",  关系：" + folkrelation + ",  家属联系方式：" + spare1);
+                        //数据校验
+                        if (folkname == "" || folkname == null || folksex == "" || folksex == null || folkage == "" ||
+                            folkage == null || folkrelation == "" || folkrelation == null || spare1 == "" || spare1 == null) {
+                            alert("请将信息补充完整！");
+                            return false;
+                        }
+                        if (!(/^1[3456789]\d{9}$/.test(spare1))) {
+                            alert("手机号码有误，请重填");
+                            return false;
+                        }
+                        $.ajax({
+                            type: "post",
+                            url: "/addFamily/" + folkname + "/" + folksex + "/" + folkage + "/" + folkrelation + "/" + spare1,
+                            success: function (result) {
+                                //成功的回调函数
+                                if (result.code == 0) {
+                                    //成功
+                                    alert(result.msg);
+                                    location.href = "/info"
+                                } else {
+                                    alert(result.msg);
+                                }
+                            }
+                        });
+                    }
+                </script>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

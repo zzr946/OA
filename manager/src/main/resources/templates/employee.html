@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>员工信息</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link type="text/css" rel="stylesheet" href="css/css.css"/>
+    <link rel="stylesheet" href="css/employee.css">
+    <script src="js/jquery.min.js"></script>
+</head>
+<body>
+
+<!--导航栏下面的部分-->
+<div class="container" style="height: 300px">
+    <!--左边栏   日历  日期-->
+    <!--<div th:replace="publicFragment::left_bar"></div>-->
+
+    <!--显示的主体部分-->
+    <div class="mainbody" style="margin: 0px">
+        <!--个人信息-->
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 info_main">
+            <span style="font-size: 20px;margin-top: 15px">个人信息</span>
+            <hr class="line">
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <!--个人信息 展示部分-->
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 own_info">
+                    <div class="input-group">
+                        <span class="input-group-addon">工号</span>
+                        <input type="text" class="form-control jobnumber" th:value="${session.employeeInfo.jobnumber}"
+                               aria-describedby="basic-addon1" >
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">姓名</span>
+                        <input type="text" class="form-control name" th:value="${session.employeeInfo.name}"
+                               aria-describedby="basic-addon1" >
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">部门</span>
+                        <!--<input type="text" class="form-control department" th:value="${session.employeeInfo.department}"-->
+                               <!--aria-describedby="basic-addon1" >-->
+                        <select class="form-control depart" >
+                            <option th:value="${session.employeeInfo.department}" th:text="${session.employeeInfo.department}"></option>
+                            <option th:each="empt:${session.option_dep}" th:value="${empt.depname}" th:text="${empt.depname}">部门名称</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">性别</span>
+                        <!--<input type="text" class="form-control sex" th:value="${session.employeeInfo.sex}"-->
+                               <!--aria-describedby="basic-addon1" >-->
+                        <select class="form-control sex">
+                            <option th:value="${session.employeeInfo.sex}" th:text="${session.employeeInfo.sex}"></option>
+                            <option value="男">男</option>
+                            <option value="女">女</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">年龄</span>
+                        <input type="text" class="form-control age" th:value="${session.employeeInfo.age}"
+                               aria-describedby="basic-addon1" >
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">电话</span>
+                        <input type="text" class="form-control phone" name="phone" th:value="${session.employeeInfo.phone}"
+                               aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">职位状态</span>
+                        <!--<input type="text" class="form-control state" th:value="${session.employeeInfo.state}"-->
+                               <!--aria-describedby="basic-addon1" >-->
+                        <select class="form-control state">
+                            <option th:value="${session.employeeInfo.state}" th:text="${session.employeeInfo.state}"></option>
+                            <option value="在职">在职</option>
+                            <option value="离职">离职</option>
+                        </select>
+                    </div>
+                    <!--<hr class="line">-->
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <!--隐藏域记录当亲登录人的id-->
+                        <button id="fanhui" type="button" class="btn btn-primary">返回</button>
+                        <input type="hidden" id="user_id" name="id" th:value="${session.employeeInfo.id}">
+                        <button id="save_own" type="button" class="btn btn-success btn_save">保存</button>
+                    </div>
+                    <!--点击按钮后触发的事件-->
+                    <script>
+                        $(function () {
+                            //点击个人信息的保存按钮后触发的事件
+                            $("#save_own").click(function () {
+                                //alert("点击了保存按钮");
+                                //获取被修改人的id
+                                var id = $("#user_id").val();
+                                //获取工号
+                                var jobnumber=$(".jobnumber").val();
+                                //获取姓名
+                                var name=$(".name").val();
+                                //获取部门
+                                var department=$(".depart").val();
+                                //获取性别
+                                var sex=$(".sex").val();
+                                //获取年龄
+                                var age=$(".age").val();
+                                //获取电话
+                                var phone=$(".phone").val();
+                                //获取职位状态
+                                var state=$(".state").val();
+                                console.info(id+"-"+jobnumber+"-"+name+"-"+department+"-"+sex+"-"+age+"-"+phone+"-"+state);
+
+                                //数据校验
+                                if (!(/^1[3456789]\d{9}$/.test(phone))) {
+                                    alert("手机号码有误，请重填");
+                                    return false;
+                                }
+                                if(age>150||age<0){
+                                    alert("年龄输入有误！");
+                                    return false;
+                                }
+
+                                $.ajax({
+                                    type: "post",
+                                    url: "/editemployee/" + id + "/" + jobnumber+"/"+name+"/"+department+"/"+sex+"/"+age+"/"+phone+"/"+state,
+                                    //data: {"id": id,"phone": phone},
+                                    success: function (result) {
+                                        //成功的回调函数
+                                        if (result.code == 0) {
+                                           //重新加载此页面
+                                            //location.href="/employee/"+id;
+                                            location.href="/empmanager";
+                                            alert(result.msg);
+                                        } else {
+                                            alert("系统异常！")
+                                        }
+                                    }
+                                    //dataType: "json"
+                                });
+
+                            });
+                            //点击退出按钮后触发的事件
+                            $("#fanhui").click(function () {
+                                //直接返回上一级页面
+                                location.href="/empmanager";
+                            });
+                            
+                            
+                            
+                        })
+                    </script>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

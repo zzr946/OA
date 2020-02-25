@@ -1,0 +1,26 @@
+.info_main{
+    margin-top: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #eee;
+    float: right;
+    padding-top: 15px;
+}
+
+.line{
+    margin-top: 3px;
+    margin-bottom: 10px;
+}
+
+.input-group{
+    margin-bottom: 10px;
+}
+
+.btn_save{
+    float: right;
+    margin-bottom: 10px;
+}
+
+.add_family{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

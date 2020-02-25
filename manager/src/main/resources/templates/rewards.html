@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>奖惩记录</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link type="text/css" rel="stylesheet" href="css/css.css"/>
+    <link rel="stylesheet" href="css/rewards.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/rewards.js"></script>
+
+</head>
+<body>
+<!--顶部导航栏-->
+<div th:replace="publicFragment::top_nav"></div>
+<!--顶部导航栏的点击事件-->
+<script>
+    function sty() {
+        $("#sy").removeClass("seleli");
+        $("#grzx").removeClass("seleli");
+        $("#jcjl").removeClass("seleli");
+        $("#kqtj").removeClass("seleli");
+        $("#xcfl").removeClass("seleli");
+    }
+
+    $(function () {
+        $("#jcjl").addClass("seleli");//页面加载时显示已经选中的菜单项
+        $("#sy").click(function () {
+            //alert("首页");
+            sty();
+            $("#sy").addClass("seleli");
+            location.href = "/main";
+        });
+
+        $("#grzx").click(function () {
+            //alert("个人中心");
+            sty();
+            $("#grzx").addClass("seleli");
+            location.href = "/info";
+        });
+
+        $("#jcjl").click(function () {
+            //alert("奖惩记录");
+            sty();
+            $("#jcjl").addClass("seleli");
+            location.href = "/rewards";
+        });
+
+        $("#kqtj").click(function () {
+            //alert("考勤统计");
+            sty();
+            $("#kqtj").addClass("seleli");
+            location.href = "/kaoqin";
+        });
+
+        $("#xcfl").click(function () {
+            //alert("薪酬福利");
+            sty();
+            $("#xcfl").addClass("seleli");
+            location.href = "/salary";
+        });
+    })
+</script>
+
+<!--导航栏下面的部分-->
+<div class="container" style="height: 300px">
+    <!--左边栏   日历  日期-->
+    <!--<div th:replace="publicFragment::left_bar"></div>-->
+
+    <!--显示的主体部分-->
+    <div class="mainbody" style="margin: 20px 0">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 rewards_main">
+            <!--显示奖惩记录的表格-->
+            <table class="table table-condensed rewards_table">
+                <tr>
+                    <th style="width: 33%">员工编号</th>
+                    <th style="width: 33%">描述</th>
+                    <th style="width: 33%">时间</th>
+                </tr>
+                <tr th:each="record:${session.record}">
+                    <td th:text="${record.jobnumber}">员工编号</td>
+                    <td th:text="${record.describe1}">描述</td>
+                    <td th:text="${record.spare1}">时间</td>
+                </tr>
+            </table>
+
+        </div>
+
+
+    </div>
+</div>
+
+</body>
+</html>
